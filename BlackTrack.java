@@ -41,7 +41,7 @@ public class BlackTrack{
 	public static void login(String username, String password){
 		//make login request /webapps/login/
 		//grab all cookies
-		HttpRequest init = Http.Request.newBuilder()
+		HttpRequest init = HttpRequest.newBuilder()
 			.uri(new URI("https://tamusa.blackboard.com/webapps/login/"))
 			.header("Cookie", cookieConsent)
 			.GET()
