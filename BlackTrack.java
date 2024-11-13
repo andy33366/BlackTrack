@@ -14,18 +14,18 @@ import java.util.Scanner;
 
 public class BlackTrack{
 
+		Static String username = "";
+		Static String password = "";
+		Static String jSessionID = "";
+		Static final String cookieConsent = "COOKIE_CONSENT_ACCEPTED=\"true\"";
+		Static String AWSELB = "";
+		Static String AWSELBCORS = "";
+		Static String BbClientCalendarTimeZone="";
+		Static String BbRouter="";
 
 	public static void main(String[] args){
 
 
-		String username = "";
-		String password = "";
-		String jSessionID = "";
-		final String cookieConsent = "COOKIE_CONSENT_ACCEPTED=\"true\"";
-		String AWSELB = "";
-		String AWSELBCORS = "";
-		String BbClientCalendarTimeZone="";
-		String BbRouter="";
 		String jsonResponse="";
 		//instead of sending each cookie seperately, maybe i could send all of the cookies at once?
 		String cookies="";
@@ -65,6 +65,8 @@ public class BlackTrack{
 		//get /learn/api/v1/users/<userId>/memberships?expand=course.effectievAvailability&includeCount=true&limit=10000
 		//grab first courseId field
 		//append courseId to courses[]
+		//once all courses added print out courses.length()
+		System.out.println("\nYou are enrolled in "+courses.length()+" courses this semester.");
 	}
 	//api call to get grades
 	public static double[] getGrades(String[] courses){
