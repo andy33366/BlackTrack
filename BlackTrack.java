@@ -4,14 +4,16 @@
  *
  *
  */
-import org.json.*;
-import java.net.URL;
-import java.net.HTTP;
+
+
+import java.net.URI;
+import java.net.http.*;
 import java.net.HttpURLConnection;
 import java.util.Scanner;
 
 
 public class BlackTrack{
+
 
 	public static void main(String[] args){
 
@@ -24,27 +26,31 @@ public class BlackTrack{
 		String AWSELBCORS = "";
 		String BbClientCalendarTimeZone="";
 		String BbRouter="";
+		String jsonResponse="";
+		//instead of sending each cookie seperately, maybe i could send all of the cookies at once?
+		String cookies="";
 
 
 		//initializes scanner and HttpClient objects
 		Scanner input = new Scanner(System.in);
 		HttpClient client = HttpClient.newHttpClient();
 	
-		System.out.println("Welcome to BlackTrack\nIn order to access the Blackboard API, you will need to give the program your login information. If you are not properly logged in, the program will not be able to access your grades");
+		System.out.println("Welcome to BlackTrack\nIn order to access the Blackboard API, you will need to give the program your login information. If you are not properly logged in, the program will not be able to access your grades. Make sure you are logged in through DUO authentication.");
 		System.out.print("Username:");
 		username = input.nextLine();
 		System.out.print("Password:");
 		password = input.nextLine();
-		//
+		
+		login(username, password, cookieConsent);
 	}
 	//get request to get necessary cookies and log in
-	public static void login(String username, String password){
+	public static void login(String username, String password, String cookieConsent){
 		//make login request /webapps/login/
 		//grab all cookies
 		HttpRequest init = HttpRequest.newBuilder()
 			.uri(new URI("https://tamusa.blackboard.com/webapps/login/"))
 			.header("Cookie", cookieConsent)
-			.GET()
+			.POST(BodyPublishers.ofString("user_id="+username+"&password="+password+"&login=Sign+In&secondaryAuthToken=&showMFARegistration=%24showMFAVerification&showMFASuccessFul=%24showMFASuccessFul&action=login&new_loc=&blackboard.platform.security.NonceUtil.nonce.ajax=thisdoesntworkuseanotherhttprequesttogetthis"))
 			.build();
 		HttpResponse<String> response =
 			client.send(init, BodyHandlers.ofString());
@@ -61,7 +67,7 @@ public class BlackTrack{
 		//append courseId to courses[]
 	}
 	//api call to get grades
-	public static double[] getGrades(courses[]){
+	public static double[] getGrades(String[] courses){
 		//for i in courses[]
 		//get /learn/api/v1/courses/<courseId>/gradebook/grades?limit=100&userId=<userId>
 		//grab manualGrade and pointsPossible
@@ -69,7 +75,7 @@ public class BlackTrack{
 		//append courseGrade to grades[]
 	}
 	//calculate gpa based on grades
-	public static double calcGPA(grades){
+	public static double calcGPA(double[] grades){
 		//for grade in grades[] 
 		//case grade < 0.65 --> 0.0
 		//case grade < 0.67 --> 1.0
@@ -84,6 +90,9 @@ public class BlackTrack{
 		//default 4.0
 	}
 	//print message based on gpa
-	public static void printMessage(gpa){
+	public static void printMessage(double gpa){
+	}
+	public static String updateCookies(String cookies){
+		//replace old cookies with new cookies
 	}
 }
