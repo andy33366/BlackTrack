@@ -19,14 +19,16 @@ public class BlackTrack{
 		String username = "";
 		String password = "";
 		String jSessionID = "";
-		final String COOKIE_CONSENT_ACCEPTED="true";
+		final String cookieConsent = "COOKIE_CONSENT_ACCEPTED=\"true\"";
 		String AWSELB = "";
 		String AWSELBCORS = "";
 		String BbClientCalendarTimeZone="";
 		String BbRouter="";
 
 
+		//initializes scanner and HttpClient objects
 		Scanner input = new Scanner(System.in);
+		HttpClient client = HttpClient.newHttpClient();
 	
 		System.out.println("Welcome to BlackTrack\nIn order to access the Blackboard API, you will need to give the program your login information. If you are not properly logged in, the program will not be able to access your grades");
 		System.out.print("Username:");
@@ -37,20 +39,17 @@ public class BlackTrack{
 	}
 	//get request to get necessary cookies and log in
 	public static void login(String username, String password){
-		//make a get request to /ultra/grades
-		//grab AWSELB and AWSELBCORS
-		//
-		//HttpRequest init = Http.Request.newBuilder()
-		//	.uri(new URI("https://tamusa.blackboard.com/ultra/grades"))
-		//	.header("Cookie", "COOKIE_CONSENT_ACCEPTED="+COOKIE_CONSENT_ACCEPTED+"")
-		//	.GET()
-		//	.build();
-		//make get request to /?new_loc=%2Fultra%2Fgrades
-		//send AWSELB, AWSELBCORS, and COOKIE_CONSENT_ACCEPTED=true
-		//grab JSESSIONID and BbRouter
-		//
 		//make login request /webapps/login/
-		//
+		//grab all cookies
+		HttpRequest init = Http.Request.newBuilder()
+			.uri(new URI("https://tamusa.blackboard.com/webapps/login/"))
+			.header("Cookie", cookieConsent)
+			.GET()
+			.build();
+		HttpResponse<String> response =
+			client.send(init, BodyHandlers.ofString());
+		System.out.println(response.statusCode());
+		System.out.println(response.body());
 		//get roles to get userId /learn/api/v1/users/me?expand=systemRoles,insRoles
 		//
 		//
